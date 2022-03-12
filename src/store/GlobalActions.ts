@@ -1,10 +1,11 @@
-import { GnnNode } from "../types";
+import {GnnNode} from "../types";
 
 export enum GlobalActions {
     Init = "INIT",
     UpdateGnnNodes = 'UPDATE_GNN_NODES',
     UpdateFocusedNodes = 'UPDATE_FOCUSED_NODES',
     UpdateCurrentNode = 'UPDATE_CURRENT_NODE',
+    UpdateMatrixData = "UPDATE_MATRIX_DATA"
 }
 
 export interface GlobalAction {
@@ -33,8 +34,18 @@ export interface GlobalUpdateCurrentNodeAction {
     }
 }
 
-export type GlobalActionTypes = 
+export interface GlobalUpdateMatrixAction {
+    type: GlobalActions.UpdateMatrixData,
+    payload: {
+        kCommunities: any[],
+        matrixBad: number[][],
+        matrixOverlap: number[][]
+    }
+}
+
+export type GlobalActionTypes =
     | GlobalInitAction
     | GlobalUpdateGnnNodesAction
     | GlobalUpdateFocusedNodesAction
     | GlobalUpdateCurrentNodeAction
+    | GlobalUpdateMatrixAction

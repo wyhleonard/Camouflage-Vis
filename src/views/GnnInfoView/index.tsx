@@ -1,44 +1,43 @@
-import { GnnInfoViewProps } from "./type";
-import { 
-    createStyles, 
+import {GnnInfoViewProps} from "./type";
+import {
+    createStyles,
     makeStyles,
-    Paper, 
 } from "@material-ui/core";
-import BasicInfoView from "./components/BasicInfoView";
 import ScatterPlotView from "./components/ScatterPlotView";
+import ScoreStatisticsView from "../ScoreStatisticsView";
+import ViewContainer from "../../components/ViewContainer";
 
 const useStyles = makeStyles(() => createStyles({
     root: {
-        marginLeft: 4,
-        marginTop: 4,
-        width: 'calc(100% - 6px)',
-        height: 'calc(100% - 8px)',
-        borderWidth: 2,
+        width: "100%",
+        height: "100%",
         boxSizing: 'border-box',
     },
     basicInfoView: {
         width: '100%',
-        height: '50%',
+        height: '35%',
     },
     scatterPlotView: {
         width: '100%',
-        height: '50%',
+        height: '65%',
     }
 }));
 
-const GnnInfoView: React.FC<GnnInfoViewProps> = ({
-
-}) => {
+const GnnInfoView: React.FC<GnnInfoViewProps> = ({}) => {
     const classes = useStyles();
 
-    return <Paper variant='outlined' className={classes.root}>
-        <div className={classes.basicInfoView}>
-            <BasicInfoView />
-        </div>
+    return <div className={classes.root}>
         <div className={classes.scatterPlotView}>
-            <ScatterPlotView />
+            <ViewContainer title={"OverView"}>
+                <ScatterPlotView/>
+            </ViewContainer>
         </div>
-    </Paper>
+        <div className={classes.basicInfoView}>
+            <ViewContainer title={"StatisticsView"}>
+                <ScoreStatisticsView/>
+            </ViewContainer>
+        </div>
+    </div>
 }
 
 export default GnnInfoView;

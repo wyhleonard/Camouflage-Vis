@@ -1,18 +1,22 @@
-import { 
-    createStyles, 
-    createTheme, 
-    IconButton, 
-    makeStyles, 
-    ThemeProvider 
+import {
+    createStyles,
+    createTheme,
+    IconButton,
+    makeStyles, Paper,
+    ThemeProvider
 } from "@material-ui/core";
 // import RevealView from "./views/RevealView";
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import BackendIcon from '@material-ui/icons/Backup';
-import { GnnNode } from "./types";
-import { useDispatch } from "react-redux";
-import { GlobalActions, GlobalUpdateGnnNodesAction } from "./store/GlobalActions";
+import {GnnNode} from "./types";
+import {useDispatch} from "react-redux";
+import {GlobalActions, GlobalUpdateGnnNodesAction} from "./store/GlobalActions";
 import GnnInfoView from "./views/GnnInfoView";
 import GraphStructureView from "./views/GraphStructureView";
+import LineUpView from "./views/LineUpView/index"
+import {fetchInitData} from "./api";
+import ConfusionMatrixView from "./views/ConfusionMatrixView";
+import ViewContainer from "./components/ViewContainer";
 
 const useStyles = makeStyles(() => createStyles({
     app: {
@@ -43,26 +47,25 @@ const useStyles = makeStyles(() => createStyles({
         width: '100%',
         height: '96%',
         display: 'flex',
-    }, 
+    },
     revealView: {
         width: '100%',
         height: '48%',
     },
     gnnInfoView: {
-        width: '25%',
-        height: '100%', 
+        width: '35%',
+        height: '100%',
     },
     networkInfoDiv: {
-        width: '75%',
-        height: '100%', 
-    }, 
+        width: '65%',
+        height: '100%',
+        margin: 4
+    },
     graphStructureView: {
         width: '100%',
-        height: '50%', 
+        height: '50%',
     },
-    nodeInformationView: {
-        
-    }
+    nodeInformationView: {}
 }));
 
 const theme = createTheme({
@@ -82,20 +85,11 @@ const App: React.FC = () => {
     const dispatch = useDispatch();
 
     const handleUploadData = () => {
-        fetch('http://127.0.0.1:8000/fetch_init_data/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8'
-            },
-            mode: "cors",
-            cache: "default",
-            body: ""
-        })
-        .then(res => res.json())
-        .then(json => {
+        fetchInitData().then(json => {
             const gnnNodes: GnnNode[] = [];
             const nodesData = json.data;
-            for(let i = 0; i < nodesData.id.length; i++) {
+
+            for (let i = 0; i < nodesData.id.length; i++) {
                 gnnNodes.push({
                     id: nodesData.id[i],
                     embedding: nodesData.embedding[i],
@@ -120,21 +114,33 @@ const App: React.FC = () => {
     return <ThemeProvider theme={theme}>
         <div className={classes.app}>
             <div className={classes.systemTitle}>
-                <AccountTreeIcon className={classes.titleIcon} color={'secondary'} />
+                <AccountTreeIcon className={classes.titleIcon} color={'secondary'}/>
                 <span className={classes.titleText}>CamouflageVis</span>
                 <IconButton onClick={handleUploadData}>
-                    <BackendIcon className={classes.uploadIcon} color={'secondary'} />
+                    <BackendIcon className={classes.uploadIcon} color={'secondary'}/>
                 </IconButton>
             </div>
+
             <div className={classes.mainContent}>
                 <div className={classes.gnnInfoView}>
-                    <GnnInfoView />
+                    <GnnInfoView/>
                 </div>
-                <div className={classes.networkInfoDiv}>
-                    <div className={classes.graphStructureView}>
-                        <GraphStructureView />
-                    </div>
 
+                <div className={classes.networkInfoDiv}>
+                    <div style={{display: "flex", height: "50%", overflow: "auto"}}>
+                        <ViewContainer title={"LineupView"}>
+                            <LineUpView/>
+                        </ViewContainer>
+
+                        <ViewContainer title={"ConfusionMatrixView"}>
+                            <ConfusionMatrixView/>
+                        </ViewContainer>
+                    </div>
+                    <div className={classes.graphStructureView}>
+                        <ViewContainer title={"GraphStructureView"}>
+                            <GraphStructureView/>
+                        </ViewContainer>
+                    </div>
                 </div>
             </div>
         </div>
