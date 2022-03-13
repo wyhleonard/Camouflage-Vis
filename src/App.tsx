@@ -14,10 +14,12 @@ import {GlobalActions, GlobalUpdateGnnNodesAction} from "./store/GlobalActions";
 import GnnInfoView from "./views/GnnInfoView";
 import GraphStructureView from "./views/GraphStructureView";
 import LineUpView from "./views/LineUpView/index"
-import {fetchInitData} from "./api";
+import {fetchFeatures, fetchInitData} from "./api";
 import ConfusionMatrixView from "./views/ConfusionMatrixView";
 import ViewContainer from "./components/ViewContainer";
 import FeatureCharts from "./views/FeatureCharts";
+import {useEffect, useState} from "react";
+import FeatrueBoxPlotView from "./views/FeatureBoxPlotView";
 
 const useStyles = makeStyles(() => createStyles({
     app: {
@@ -85,6 +87,7 @@ const App: React.FC = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
 
+
     const handleUploadData = () => {
         fetchInitData().then(json => {
             const gnnNodes: GnnNode[] = [];
@@ -122,30 +125,31 @@ const App: React.FC = () => {
                 </IconButton>
             </div>
 
-            <FeatureCharts/>
+            <div className={classes.mainContent}>
+                <div className={classes.gnnInfoView}>
+                    <GnnInfoView/>
+                </div>
 
-            {/*<div className={classes.mainContent}>*/}
-            {/*    <div className={classes.gnnInfoView}>*/}
-            {/*        <GnnInfoView/>*/}
-            {/*    </div>*/}
+                <div className={classes.networkInfoDiv}>
+                    <div style={{display: "flex", height: "50%", overflow: "auto"}}>
+                        <ViewContainer title={"LineupView"}>
+                            <LineUpView/>
+                        </ViewContainer>
 
-            {/*    <div className={classes.networkInfoDiv}>*/}
-            {/*        <div style={{display: "flex", height: "50%", overflow: "auto"}}>*/}
-            {/*            <ViewContainer title={"LineupView"}>*/}
-            {/*                <LineUpView/>*/}
-            {/*            </ViewContainer>*/}
-
-            {/*            <ViewContainer title={"ConfusionMatrixView"}>*/}
-            {/*                <ConfusionMatrixView/>*/}
-            {/*            </ViewContainer>*/}
-            {/*        </div>*/}
-            {/*        <div className={classes.graphStructureView}>*/}
-            {/*            <ViewContainer title={"GraphStructureView"}>*/}
-            {/*                <GraphStructureView/>*/}
-            {/*            </ViewContainer>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
+                        <ViewContainer title={"ConfusionMatrixView"}>
+                            <ConfusionMatrixView/>
+                        </ViewContainer>
+                    </div>
+                    <div className={classes.graphStructureView}>
+                        {/*<ViewContainer title={"GraphStructureView"}>*/}
+                        {/*    <GraphStructureView/>*/}
+                        {/*</ViewContainer>*/}
+                        <ViewContainer title={"GraphStructureView"}>
+                            <FeatrueBoxPlotView/>
+                        </ViewContainer>
+                    </div>
+                </div>
+            </div>
         </div>
     </ThemeProvider>
 }

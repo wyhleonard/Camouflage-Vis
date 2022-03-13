@@ -9,7 +9,8 @@ export interface GlobalState {
     currentEdges: [number, number, number][][],
     kCommunities: any[],
     matrixBad: number[][],
-    matrixOverlap: number[][]
+    matrixOverlap: number[][],
+    selectedMatrixCell: number[]
 }
 
 const initialGlobalState: () => GlobalState = () => ({
@@ -30,8 +31,8 @@ const initialGlobalState: () => GlobalState = () => ({
         {k: 7, community: []},
     ],
     matrixBad: [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 5, 0, 5, 0, 5, 0, 5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 5, 0, 5, 0, 5, 0, 5], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 5, 0, 5, 0, 6, 0, 6], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 5, 0, 5, 0, 6, 0, 6]],
-    matrixOverlap: [[16, 16, 16, 0, 16, 0, 16, 0, 16, 0], [16, 16, 16, 0, 16, 0, 16, 0, 16, 0], [16, 16, 17, 0, 17, 0, 17, 1, 17, 1], [0, 0, 0, 10, 0, 10, 0, 10, 1, 10], [16, 16, 17, 0, 17, 0, 17, 1, 17, 1], [0, 0, 0, 10, 0, 10, 0, 10, 1, 10], [16, 16, 17, 0, 17, 0, 18, 1, 18, 2], [0, 0, 1, 10, 1, 10, 1, 12, 2, 12], [16, 16, 17, 1, 17, 1, 18, 2, 19, 3], [0, 0, 1, 10, 1, 10, 2, 12, 3, 13]]
-
+    matrixOverlap: [[16, 16, 16, 0, 16, 0, 16, 0, 16, 0], [16, 16, 16, 0, 16, 0, 16, 0, 16, 0], [16, 16, 17, 0, 17, 0, 17, 1, 17, 1], [0, 0, 0, 10, 0, 10, 0, 10, 1, 10], [16, 16, 17, 0, 17, 0, 17, 1, 17, 1], [0, 0, 0, 10, 0, 10, 0, 10, 1, 10], [16, 16, 17, 0, 17, 0, 18, 1, 18, 2], [0, 0, 1, 10, 1, 10, 1, 12, 2, 12], [16, 16, 17, 1, 17, 1, 18, 2, 19, 3], [0, 0, 1, 10, 1, 10, 2, 12, 3, 13]],
+    selectedMatrixCell: [0, 0]
 })
 
 const globalReducer: (state: GlobalState, action: GlobalActionTypes) => GlobalState = (state = initialGlobalState(), action) => {
@@ -58,6 +59,11 @@ const globalReducer: (state: GlobalState, action: GlobalActionTypes) => GlobalSt
             return {
                 ...state,
                 ...action.payload
+            }
+        case GlobalActions.GlobalUpdateSelectedMatrixCellAction:
+            return {
+                ...state,
+                selectedMatrixCell: action.payload
             }
         default:
             return state;

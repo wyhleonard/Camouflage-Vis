@@ -32,7 +32,7 @@ def create_graph(relations):
     return g, nodes, edges
 
 # 归一化数组
-def Normalize(array):
+def normalize(array):
     mx = np.nanmax(array)
     mn = np.nanmin(array)
     t = (array - mn) / (mx - mn)

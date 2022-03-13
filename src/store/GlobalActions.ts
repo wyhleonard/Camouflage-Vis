@@ -5,11 +5,12 @@ export enum GlobalActions {
     UpdateGnnNodes = 'UPDATE_GNN_NODES',
     UpdateFocusedNodes = 'UPDATE_FOCUSED_NODES',
     UpdateCurrentNode = 'UPDATE_CURRENT_NODE',
-    UpdateMatrixData = "UPDATE_MATRIX_DATA"
+    UpdateMatrixData = "UPDATE_MATRIX_DATA",
+    GlobalUpdateSelectedMatrixCellAction = "UPDATA_SELECTED_MATRIXCELL"
 }
 
 export interface GlobalAction {
-    type: GlobalActions,
+    type: GlobalActions
 }
 
 export interface GlobalInitAction extends GlobalAction {
@@ -17,17 +18,17 @@ export interface GlobalInitAction extends GlobalAction {
 }
 
 export interface GlobalUpdateGnnNodesAction extends GlobalAction {
-    type: GlobalActions.UpdateGnnNodes,
+    type: GlobalActions.UpdateGnnNodes
     payload: GnnNode[]
 }
 
 export interface GlobalUpdateFocusedNodesAction extends GlobalAction {
-    type: GlobalActions.UpdateFocusedNodes,
+    type: GlobalActions.UpdateFocusedNodes
     payload: GnnNode[]
 }
 
 export interface GlobalUpdateCurrentNodeAction {
-    type: GlobalActions.UpdateCurrentNode,
+    type: GlobalActions.UpdateCurrentNode
     payload: {
         node: GnnNode,
         edges: [number, number, number][][]
@@ -35,12 +36,17 @@ export interface GlobalUpdateCurrentNodeAction {
 }
 
 export interface GlobalUpdateMatrixAction {
-    type: GlobalActions.UpdateMatrixData,
+    type: GlobalActions.UpdateMatrixData
     payload: {
         kCommunities: any[],
         matrixBad: number[][],
         matrixOverlap: number[][]
     }
+}
+
+export interface GlobalUpdateSelectedMatrixCellAction {
+    type: GlobalActions.GlobalUpdateSelectedMatrixCellAction
+    payload: number[]
 }
 
 export type GlobalActionTypes =
@@ -49,3 +55,4 @@ export type GlobalActionTypes =
     | GlobalUpdateFocusedNodesAction
     | GlobalUpdateCurrentNodeAction
     | GlobalUpdateMatrixAction
+    | GlobalUpdateSelectedMatrixCellAction

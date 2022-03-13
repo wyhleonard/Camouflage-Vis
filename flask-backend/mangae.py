@@ -1,7 +1,7 @@
 from sqldb import app
 from sqldb.model import *
 from sqlalchemy import or_, and_
-from utils import get_node_score, create_graph
+from utils import get_node_score, create_graph, normalize
 import json
 from dao import *
 from flask import request
@@ -396,13 +396,44 @@ def fetch_connect_subgraph():
         "edge_dense": edge_dense
     })
 
-@app.route("/fetch_features", methods=["get"])
+@app.route("/fetch_features", methods=["post"])
 def fetch_features():
-    features = fetch_features()
+    nodes_id = request.json.get('nodes_id')
+    features = fetch_node_features()
+
+    raw_features = [
+        [f.id, f.f2, f.f3, f.f4, f.f5, f.f6, f.f7, f.f8, f.f9, f.f10, f.f11, f.f12, f.f13, f.f14, f.f15, f.f16,
+         f.f17, f.f18, f.f19, f.f20, f.f21, f.f22, f.f23, f.f24, f.f25, f.f26] for f in features]
+
+    # node_false = AmazonLabel.query.filter(AmazonLabel.ground_truth == 1)
+    # nodes_id = [i.id for i in node_false]
+
+    # node_true = AmazonLabel.query.filter(AmazonLabel.ground_truth == 0)
+    # nodes_id = [i.id for i in node_true]
+
+    # nodes_id = [5385, 9725, 9578, 6139, 6713, 6076, 6994, 6016, 10981, 6669, 5249, 5368, 9552, 5764, 5409, 6339]
+    # nodes_id = [6309, 9581, 8197, 7841, 6824, 9522, 9248, 6937, 3940, 6770, 7654, 4375]
+
+    normalize_features = np.array(raw_features)
+
+    # 转置，行和列互换
+    normalize_features = normalize_features.transpose()
+
+    for i in range(1, len(normalize_features)):
+        t, mx, mn = normalize(normalize_features[i])
+        normalize_features[i] = t
+
+    # 重新转置回来
+    normalize_features = normalize_features.transpose()
+
+    # 筛选指定id的特征
+    selected_community_feature = np.array([i for i in normalize_features if i[0] in nodes_id])
+    selected_community_feature = selected_community_feature.transpose()
+
     return json.dumps({
-        "features": [
-            [f.id, f.f2, f.f3, f.f4, f.f5, f.f6, f.f7, f.f8, f.f9, f.f10, f.f11, f.f12, f.f13, f.f14, f.f15, f.f16,
-             f.f17, f.f18, f.f19, f.f20, f.f21, f.f22, f.f23, f.f24, f.f25, f.f26] for f in features]
+        "raw_features": raw_features,
+        "normalize_features": normalize_features.tolist(),
+        "selected_community_feature": selected_community_feature.tolist()
     })
 
 if __name__ == "__main__":

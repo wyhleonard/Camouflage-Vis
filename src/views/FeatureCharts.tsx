@@ -1,5 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 import {createStyles, createTheme, makeStyles, ThemeProvider} from "@material-ui/core";
+import {fetchFeatures} from "../api";
 
 const useStyles = makeStyles(() => createStyles({
     Container: {
@@ -23,47 +24,44 @@ const theme = createTheme({
 
 const echarts = require("echarts");
 
-interface StatisticChartsProps {
-    data: {
-        train_tt: number[],
-        train_ff: number[],
-        train_tf: number[],
-        train_ft: number[],
-        test_true: number[],
-        test_false: number[]
-    },
-    xAxisData: string[]
+interface LineUpChartsProps {
+    data: number[][]
 }
 
-const LineUpCharts: React.FC = () => {
+const FeatureCharts: React.FC<LineUpChartsProps> = ({data}) => {
     const classes = useStyles();
     const rootNode = useRef(null);
 
     useEffect(() => {
         renderCharts();
-    }, [])
+    }, [data])
 
     const renderCharts = () => {
 
         const div = rootNode.current;
         const chart = echarts.init(div);
 
+        const source = data;
+
+        const barTransparent = source.map((d: any) => {
+            return Math.min(...d);
+        });
+        const barData = source.map((d: any) => {
+            return Math.max(...d) - Math.min(...d);
+        });
+
         const option = {
+            title: [{
+                text: "Feature Box Plot",
+                left: "center"
+            }],
             dataset: [
+                {source},
                 {
-                    source: [
-                        [850, 740, 900, 1070, 930, 850, 950, 980, 980, 880, 1000, 980, 930, 650, 760, 810, 1000, 1000, 960, 960],
-                        [960, 940, 960, 940, 880, 800, 850, 880, 900, 840, 830, 790, 810, 880, 880, 830, 800, 790, 760, 800],
-                        [880, 880, 880, 860, 720, 720, 620, 860, 970, 950, 880, 910, 850, 870, 840, 840, 850, 840, 840, 840],
-                        [890, 810, 810, 820, 800, 770, 760, 740, 750, 760, 910, 920, 890, 860, 880, 720, 840, 850, 850, 780],
-                        [890, 840, 780, 810, 760, 810, 790, 810, 820, 850, 870, 870, 810, 740, 810, 940, 950, 800, 810, 870]
-                    ]
-                },
-                {
+                    fromDatasetIndex: 0,
                     transform: {
                         type: 'boxplot',
-                        config: { itemNameFormatter: 'feature {value}' }
-                    }
+                    },
                 },
                 {
                     fromDatasetIndex: 1,
@@ -79,7 +77,8 @@ const LineUpCharts: React.FC = () => {
             grid: {
                 left: '5%',
                 right: '5%',
-                bottom: '5%'
+                bottom: '15%',
+                top: '15%'
             },
             xAxis: {
                 type: 'category',
@@ -102,12 +101,39 @@ const LineUpCharts: React.FC = () => {
                 {
                     name: 'boxplot',
                     type: 'boxplot',
+                    itemStyle: {
+                        color: "rgb(255,146,146)",
+                        borderWidth: 2
+                    },
                     datasetIndex: 1
                 },
+                // {
+                //     name: 'outlier',
+                //     type: 'scatter',
+                //     datasetIndex: 2
+                // },
                 {
-                    name: 'outlier',
-                    type: 'scatter',
-                    datasetIndex: 2
+                    name: 'transparent',
+                    type: 'bar',
+                    data: barTransparent,
+                    stack: 'Total',
+                    itemStyle: {
+                        borderColor: 'transparent',
+                        color: 'transparent'
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            borderColor: 'transparent',
+                            color: 'transparent'
+                        }
+                    }
+                },
+                {
+                    name: 'total',
+                    type: 'bar',
+                    data: barData,
+                    stack: 'Total',
+                    barWidth: '95%',
                 }
             ]
         };
@@ -116,9 +142,9 @@ const LineUpCharts: React.FC = () => {
 
     return <ThemeProvider theme={theme}>
         <div className={classes.Container}>
-            <div style={{width: 620, height: 500}} ref={rootNode}/>
+            <div style={{width: 800, height: 200}} ref={rootNode}/>
         </div>
     </ThemeProvider>
 }
 
-export default LineUpCharts;
+export default FeatureCharts;

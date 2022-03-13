@@ -11,6 +11,7 @@ import {createSelector} from "reselect";
 import {RootState} from "../../store";
 import {GlobalState} from "../../store/GlobalStore";
 import Cell from "./components/Cell";
+import {GlobalActions} from "../../store/GlobalActions";
 
 const useStyles = makeStyles(() => createStyles({
     Container: {
@@ -95,6 +96,10 @@ const ConfusionMatrixView: React.FC = () => {
 
     const handleCellClick = (i: number, j: number) => {
         console.log(kCommunities[i], kCommunities[j]);
+        dispatch({
+            type: GlobalActions.GlobalUpdateSelectedMatrixCellAction,
+            payload: [i, j]
+        })
         // fetchSubgraphData({nodes_id: [9446]})
         //     .then((data) => {
         //         const graphData = data.graphData;

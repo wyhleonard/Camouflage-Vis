@@ -49,3 +49,7 @@ export const fetchCommunityMatrix = async (data: any) => {
 export const fetchNodesRelation = async (data: any) => {
     return await basePostRequest("fetch_nodes_relation", data);
 }
+
+export const fetchFeatures = async (data: any) => {
+    return await basePostRequest("fetch_features", data)
+}
