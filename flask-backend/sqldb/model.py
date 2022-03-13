@@ -10,6 +10,36 @@ class AmazonEmbedding(db.Model):
     x = db.Column(db.Float)
     y = db.Column(db.Float)
 
+class AmazonFeature(db.Model):
+    __tablename__ = 'amazon_features'
+
+    id = db.Column(db.Integer, primary_key=True)
+    f2 = db.Column(db.Float)
+    f3 = db.Column(db.Float)
+    f4 = db.Column(db.Float)
+    f5 = db.Column(db.Float)
+    f6 = db.Column(db.Float)
+    f7 = db.Column(db.Float)
+    f8 = db.Column(db.Float)
+    f9 = db.Column(db.Float)
+    f10 = db.Column(db.Float)
+    f11 = db.Column(db.Float)
+    f12 = db.Column(db.Float)
+    f13 = db.Column(db.Float)
+    f14 = db.Column(db.Float)
+    f15 = db.Column(db.Float)
+    f16 = db.Column(db.Float)
+    f17 = db.Column(db.Float)
+    f18 = db.Column(db.Float)
+    f19 = db.Column(db.Float)
+    f20 = db.Column(db.Float)
+    f21 = db.Column(db.Float)
+    f22 = db.Column(db.Float)
+    f23 = db.Column(db.Float)
+    f24 = db.Column(db.Float)
+    f25 = db.Column(db.Float)
+    f26 = db.Column(db.Float)
+
 class AmazonLabel(db.Model):
     __tablename__ = 'amazon_labels'
 

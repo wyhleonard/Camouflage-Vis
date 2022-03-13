@@ -54,3 +54,12 @@ def fetch_relation_by_nodes_id(nodes_id):
         and_(AmazonRelation2Datum.source.in_(nodes_id), AmazonRelation2Datum.target.in_(nodes_id))
     )
     return relation0, relation1, relation2
+
+# 获取节点的特征
+def fetch_node_features(nodes_id=None):
+    features = []
+    if nodes_id == None:
+        features = AmazonFeature.query.all()
+    else:
+        features = AmazonFeature.query.filter(AmazonFeature.id.in_(nodes_id))
+    return features

@@ -17,6 +17,7 @@ import LineUpView from "./views/LineUpView/index"
 import {fetchInitData} from "./api";
 import ConfusionMatrixView from "./views/ConfusionMatrixView";
 import ViewContainer from "./components/ViewContainer";
+import FeatureCharts from "./views/FeatureCharts";
 
 const useStyles = makeStyles(() => createStyles({
     app: {
@@ -121,28 +122,30 @@ const App: React.FC = () => {
                 </IconButton>
             </div>
 
-            <div className={classes.mainContent}>
-                <div className={classes.gnnInfoView}>
-                    <GnnInfoView/>
-                </div>
+            <FeatureCharts/>
 
-                <div className={classes.networkInfoDiv}>
-                    <div style={{display: "flex", height: "50%", overflow: "auto"}}>
-                        <ViewContainer title={"LineupView"}>
-                            <LineUpView/>
-                        </ViewContainer>
+            {/*<div className={classes.mainContent}>*/}
+            {/*    <div className={classes.gnnInfoView}>*/}
+            {/*        <GnnInfoView/>*/}
+            {/*    </div>*/}
 
-                        <ViewContainer title={"ConfusionMatrixView"}>
-                            <ConfusionMatrixView/>
-                        </ViewContainer>
-                    </div>
-                    <div className={classes.graphStructureView}>
-                        <ViewContainer title={"GraphStructureView"}>
-                            <GraphStructureView/>
-                        </ViewContainer>
-                    </div>
-                </div>
-            </div>
+            {/*    <div className={classes.networkInfoDiv}>*/}
+            {/*        <div style={{display: "flex", height: "50%", overflow: "auto"}}>*/}
+            {/*            <ViewContainer title={"LineupView"}>*/}
+            {/*                <LineUpView/>*/}
+            {/*            </ViewContainer>*/}
+
+            {/*            <ViewContainer title={"ConfusionMatrixView"}>*/}
+            {/*                <ConfusionMatrixView/>*/}
+            {/*            </ViewContainer>*/}
+            {/*        </div>*/}
+            {/*        <div className={classes.graphStructureView}>*/}
+            {/*            <ViewContainer title={"GraphStructureView"}>*/}
+            {/*                <GraphStructureView/>*/}
+            {/*            </ViewContainer>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
         </div>
     </ThemeProvider>
 }

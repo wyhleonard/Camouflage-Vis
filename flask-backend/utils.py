@@ -1,5 +1,5 @@
 from igraph import Graph, summary
-
+import numpy as np
 from sqldb.model import *
 from sqlalchemy import or_, and_
 
@@ -30,3 +30,10 @@ def create_graph(relations):
     summary(g)
 
     return g, nodes, edges
+
+# 归一化数组
+def Normalize(array):
+    mx = np.nanmax(array)
+    mn = np.nanmin(array)
+    t = (array - mn) / (mx - mn)
+    return t, mx, mn

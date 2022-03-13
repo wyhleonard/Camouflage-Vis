@@ -396,5 +396,14 @@ def fetch_connect_subgraph():
         "edge_dense": edge_dense
     })
 
+@app.route("/fetch_features", methods=["get"])
+def fetch_features():
+    features = fetch_features()
+    return json.dumps({
+        "features": [
+            [f.id, f.f2, f.f3, f.f4, f.f5, f.f6, f.f7, f.f8, f.f9, f.f10, f.f11, f.f12, f.f13, f.f14, f.f15, f.f16,
+             f.f17, f.f18, f.f19, f.f20, f.f21, f.f22, f.f23, f.f24, f.f25, f.f26] for f in features]
+    })
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=2333, debug=True)
